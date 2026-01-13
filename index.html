@@ -1,0 +1,1813 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CGEFO-QMU Health - Consultation Médicale Virtuelle avec IA</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2d6ae3;
+            --primary-dark: #1a56c9;
+            --secondary: #10b981;
+            --secondary-dark: #0d9c6b;
+            --accent: #8b5cf6;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --gray: #64748b;
+            --light-gray: #e2e8f0;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --success: #10b981;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --radius: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: var(--dark);
+            background-color: #f9fafb;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4, h5 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Welcome Section */
+        .welcome-section {
+            background-color: #f0f9ff;
+            padding: 2rem 0;
+            text-align: center;
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .welcome-section h1 {
+            color: var(--primary);
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .welcome-section p {
+            color: var(--gray);
+            max-width: 800px;
+            margin: 0 auto 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .welcome-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .welcome-links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--radius);
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .welcome-links a:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .welcome-links a i {
+            font-size: 1.2rem;
+        }
+
+        /* Header */
+        header {
+            background-color: white;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .logo i {
+            color: var(--secondary);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--primary);
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--secondary-dark);
+        }
+
+        .btn-accent {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .btn-accent:hover {
+            background-color: #7c3aed;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--dark);
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 5rem 0;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-size: 3rem;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-text p {
+            font-size: 1.2rem;
+            color: var(--gray);
+            margin-bottom: 2rem;
+        }
+
+        .hero-image {
+            position: relative;
+        }
+
+        .hero-image img {
+            width: 100%;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        /* Company Info */
+        .company-info {
+            background-color: var(--primary);
+            color: white;
+            padding: 1.5rem 0;
+        }
+
+        .company-info-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .company-contact {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Features */
+        .features {
+            padding: 5rem 0;
+            background-color: white;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--dark);
+        }
+
+        .section-title p {
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background-color: #e0f2fe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            font-size: 1.8rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Specialties */
+        .specialties {
+            padding: 5rem 0;
+            background-color: #f8fafc;
+        }
+
+        .specialties-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .specialty-card {
+            background-color: white;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+
+        .specialty-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .specialty-image {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .specialty-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .specialty-card:hover .specialty-image img {
+            transform: scale(1.05);
+        }
+
+        .specialty-content {
+            padding: 1.5rem;
+        }
+
+        .specialty-content h3 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        /* How it works */
+        .how-it-works {
+            padding: 5rem 0;
+            background-color: white;
+        }
+
+        .steps {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .step {
+            flex: 1;
+            min-width: 250px;
+            text-align: center;
+            padding: 2rem 1rem;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 auto 1.5rem;
+        }
+
+        /* Upload Section */
+        .upload-section {
+            padding: 5rem 0;
+            background-color: #f8fafc;
+        }
+
+        .upload-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 3rem;
+            box-shadow: var(--shadow);
+        }
+
+        .upload-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .upload-option {
+            border: 2px dashed var(--light-gray);
+            border-radius: var(--radius);
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .upload-option:hover {
+            border-color: var(--primary);
+            background-color: #f0f9ff;
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        /* Products */
+        .products {
+            padding: 5rem 0;
+            background-color: white;
+        }
+
+        .products-filter {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            background-color: var(--light-gray);
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .filter-btn.active {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background-color: white;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-image {
+            height: 200px;
+            background-color: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray);
+        }
+
+        .product-content {
+            padding: 1.5rem;
+        }
+
+        .product-category {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background-color: #e0f2fe;
+            color: var(--primary);
+            border-radius: 50px;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 1rem 0;
+        }
+
+        /* Payment */
+        .payment-section {
+            padding: 5rem 0;
+            background-color: #f8fafc;
+        }
+
+        .payment-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 3rem;
+            box-shadow: var(--shadow);
+        }
+
+        .payment-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .payment-method {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border: 2px solid var(--light-gray);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .payment-method:hover {
+            border-color: var(--primary);
+        }
+
+        .payment-method.selected {
+            border-color: var(--primary);
+            background-color: #f0f9ff;
+        }
+
+        .payment-icon {
+            font-size: 2rem;
+            color: var(--primary);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 4rem 0 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .footer-links h4 {
+            color: white;
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #334155;
+            color: #94a3b8;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: var(--radius);
+            width: 90%;
+            max-width: 500px;
+            padding: 2rem;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Consultation Interface */
+        .consultation-interface {
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin: 2rem 0;
+        }
+
+        .analysis-results {
+            background-color: #f0f9ff;
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            margin-top: 1.5rem;
+            border-left: 4px solid var(--secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+            
+            .company-info-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .company-contact {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: white;
+                box-shadow: var(--shadow);
+                padding: 1rem;
+            }
+            
+            nav.active {
+                display: block;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .auth-buttons {
+                display: none;
+            }
+            
+            .upload-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .steps {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .step {
+                width: 100%;
+                max-width: 400px;
+            }
+            
+            .welcome-links {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .welcome-links a {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Welcome Section -->
+    <section class="welcome-section">
+        <div class="container">
+            <h1>Bienvenue sur CGEFO-QMU HEALTH</h1>
+            <p>Pour en savoir plus sur notre application ou consulter nos politiques de confidentialité, cliquez sur les liens ci-dessous :</p>
+            <div class="welcome-links">
+                <!-- Lien vers le fichier "À propos" -->
+                <a href="https://drive.google.com/file/d/16kLNXaenNcY7f1hMOjjv-wojTfQdV39P/view?usp=drive_link" target="_blank">
+                    <i class="fas fa-info-circle"></i> À propos de CGEFO-QMU HEALTH
+                </a>
+                <!-- Lien vers le fichier "Termes de confidentialité" -->
+                <a href="https://drive.google.com/file/d/1bNaC2EGFWGEf1XCsdk_a2l35gmUFfRaR/view?usp=drive_link" target="_blank">
+                    <i class="fas fa-shield-alt"></i> Termes de confidentialité CGEFO-QMU HEALTH
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-heartbeat"></i>
+                    <span>CGEFO-QMU Health</span>
+                </div>
+                
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                
+                <nav id="mainNav">
+                    <ul>
+                        <li><a href="#home">Accueil</a></li>
+                        <li><a href="#features">Fonctionnalités</a></li>
+                        <li><a href="#specialties">Spécialités</a></li>
+                        <li><a href="#how-it-works">Comment ça marche</a></li>
+                        <li><a href="#products">Produits</a></li>
+                    </ul>
+                </nav>
+                
+                <div class="auth-buttons">
+                    <button class="btn btn-outline" id="loginBtn">Connexion</button>
+                    <button class="btn btn-primary" id="signupBtn">S'inscrire</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Company Info -->
+    <section class="company-info">
+        <div class="container">
+            <div class="company-info-content">
+                <div class="company-name">
+                    <h3 style="color: white; margin: 0;">CGEFO-QMU Health</h3>
+                    <p style="margin: 0.25rem 0 0; color: #e2e8f0;">Santé Virtuelle avec Intelligence Artificielle</p>
+                </div>
+                
+                <div class="company-contact">
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <span>+237 650 862 38</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>contact@marketingcgcfoqmu.top</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Douala-Cameroun, Toronto-Canada</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>Consultation médicale virtuelle avec IA</h1>
+                    <p>Obtenez des diagnostics précis et des recommandations de produits personnalisés pour vos problèmes de santé en dermatologie, ophtalmologie et gynécologie.</p>
+                    <div class="hero-buttons">
+                        <button class="btn btn-primary btn-lg" id="startConsultation">
+                            <i class="fas fa-stethoscope"></i> Commencer une consultation
+                        </button>
+                        <button class="btn btn-outline btn-lg" id="learnMore">
+                            <i class="fas fa-info-circle"></i> En savoir plus
+                        </button>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Application de santé virtuelle">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>Fonctionnalités principales</h2>
+                <p>Notre application combine technologie IA et expertise médicale pour vous offrir une expérience de consultation complète et sécurisée.</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <h3>Consultations virtuelles</h3>
+                    <p>Consultez des spécialistes en dermatologie, ophtalmologie et gynécologie depuis chez vous, sans rendez-vous.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Diagnostic par IA</h3>
+                    <p>Notre intelligence artificielle analyse vos photos pour identifier les symptômes et proposer des diagnostics préliminaires.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-capsules"></i>
+                    </div>
+                    <h3>Recommandations de produits</h3>
+                    <p>Recevez des recommandations personnalisées de produits pharmaceutiques adaptés à votre condition.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Paiement sécurisé</h3>
+                    <p>Paiement via PayPal ou carte bancaire avec une sécurité maximale pour toutes vos transactions.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Consultation Interface -->
+    <section class="upload-section" id="consultation">
+        <div class="container">
+            <div class="section-title">
+                <h2>Consultation Virtuelle</h2>
+                <p>Démarrez votre consultation médicale assistée par intelligence artificielle.</p>
+            </div>
+            
+            <div class="consultation-interface">
+                <h3>Nouvelle consultation</h3>
+                <p>Veuillez sélectionner votre spécialité et télécharger les photos nécessaires.</p>
+                
+                <div style="margin: 2rem 0;">
+                    <label for="specialtySelect" style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Spécialité médicale</label>
+                    <select id="specialtySelect" style="width: 100%; padding: 0.75rem; border: 1px solid var(--light-gray); border-radius: var(--radius); margin-bottom: 1.5rem;">
+                        <option value="">-- Sélectionnez une spécialité --</option>
+                        <option value="dermatologie">Dermatologie</option>
+                        <option value="ophtalmologie">Ophtalmologie</option>
+                        <option value="gynecologie">Gynécologie</option>
+                    </select>
+                    
+                    <div id="imageUploadArea" style="border: 2px dashed var(--light-gray); border-radius: var(--radius); padding: 2rem; text-align: center; cursor: pointer; margin-bottom: 1.5rem;">
+                        <div class="upload-icon">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                        </div>
+                        <h4>Zone de téléchargement d'images</h4>
+                        <p>Cliquez pour télécharger ou glissez-déposez vos photos ici</p>
+                        <input type="file" id="imageInput" accept="image/*" multiple style="display: none;">
+                    </div>
+                    
+                    <div id="uploadedImages" style="display: none; margin-bottom: 1.5rem;">
+                        <h4>Images téléchargées</h4>
+                        <div id="imagePreview" style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem;"></div>
+                    </div>
+                    
+                    <div style="margin-bottom: 1.5rem;">
+                        <label for="symptomsDescription" style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Description des symptômes</label>
+                        <textarea id="symptomsDescription" style="width: 100%; padding: 0.75rem; border: 1px solid var(--light-gray); border-radius: var(--radius); min-height: 120px;" placeholder="Décrivez vos symptômes, leur durée, intensité, etc."></textarea>
+                    </div>
+                    
+                    <button class="btn btn-primary btn-lg" id="analyzeWithAI" style="width: 100%;">
+                        <i class="fas fa-robot"></i> Analyser avec l'IA
+                    </button>
+                </div>
+                
+                <div id="analysisResults" class="analysis-results" style="display: none;">
+                    <h4>Résultats de l'analyse IA</h4>
+                    <div id="aiResultsContent"></div>
+                    <button class="btn btn-secondary" id="viewProducts" style="margin-top: 1rem;">
+                        <i class="fas fa-capsules"></i> Voir les produits recommandés
+                    </button>
+                </div>
+                
+                <div id="loadingSpinner" class="spinner" style="display: none; margin: 2rem auto;"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Specialties -->
+    <section class="specialties" id="specialties">
+        <div class="container">
+            <div class="section-title">
+                <h2>Nos spécialités médicales</h2>
+                <p>Choisissez la spécialité correspondant à votre problème de santé pour une consultation personnalisée.</p>
+            </div>
+            
+            <div class="specialties-grid">
+                <div class="specialty-card">
+                    <div class="specialty-image">
+                        <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Dermatologie">
+                    </div>
+                    <div class="specialty-content">
+                        <h3>Dermatologie</h3>
+                        <p>Diagnostic des problèmes de peau : acné, eczéma, psoriasis, taches pigmentaires, etc.</p>
+                        <button class="btn btn-primary" data-specialty="dermatologie">Consulter</button>
+                    </div>
+                </div>
+                
+                <div class="specialty-card">
+                    <div class="specialty-image">
+                        <img src="https://images.unsplash.com/photo-1549692520-acc6669e2f0c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80" alt="Ophtalmologie">
+                    </div>
+                    <div class="specialty-content">
+                        <h3>Ophtalmologie</h3>
+                        <p>Évaluation des troubles visuels : myopie, cataracte, glaucome, sécheresse oculaire, etc.</p>
+                        <button class="btn btn-primary" data-specialty="ophtalmologie">Consulter</button>
+                    </div>
+                </div>
+                
+                <div class="specialty-card">
+                    <div class="specialty-image">
+                        <img src="https://images.unsplash.com/photo-1551601651-2a8555f1a136?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80" alt="Gynécologie">
+                    </div>
+                    <div class="specialty-content">
+                        <h3>Gynécologie</h3>
+                        <p>Consultation pour problèmes gynécologiques : infections, douleurs menstruelles, etc.</p>
+                        <button class="btn btn-primary" data-specialty="gynecologie">Consulter</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How it works -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="container">
+            <div class="section-title">
+                <h2>Comment ça marche</h2>
+                <p>Quatre étapes simples pour obtenir un diagnostic et des recommandations personnalisées.</p>
+            </div>
+            
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Inscription</h3>
+                    <p>Connectez-vous avec votre compte Google pour accéder à l'application.</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Choix de spécialité</h3>
+                    <p>Sélectionnez la spécialité médicale correspondant à votre problème.</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Téléchargement photo</h3>
+                    <p>Prenez une photo ou téléchargez une image de la zone concernée.</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3>Résultats & recommandations</h3>
+                    <p>Recevez l'analyse IA et les recommandations de produits adaptés.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products -->
+    <section class="products" id="products">
+        <div class="container">
+            <div class="section-title">
+                <h2>Produits recommandés</h2>
+                <p>Découvrez nos recommandations de produits pharmaceutiques adaptés à différents problèmes de santé.</p>
+            </div>
+            
+            <div class="products-filter">
+                <button class="filter-btn active" data-filter="all">Tous</button>
+                <button class="filter-btn" data-filter="dermatologie">Dermatologie</button>
+                <button class="filter-btn" data-filter="ophtalmologie">Ophtalmologie</button>
+                <button class="filter-btn" data-filter="gynecologie">Gynécologie</button>
+            </div>
+            
+            <div class="products-grid">
+                <!-- Products will be dynamically loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <i class="fas fa-heartbeat"></i> CGEFO-QMU Health
+                    </div>
+                    <p>Application de consultation médicale virtuelle avec IA pour des diagnostics précis et des recommandations de produits personnalisés.</p>
+                    <div class="social-icons" style="margin-top: 1.5rem;">
+                        <a href="#" style="color: white; margin-right: 1rem; font-size: 1.2rem;"><i class="fab fa-facebook"></i></a>
+                        <a href="#" style="color: white; margin-right: 1rem; font-size: 1.2rem;"><i class="fab fa-twitter"></i></a>
+                        <a href="#" style="color: white; margin-right: 1rem; font-size: 1.2rem;"><i class="fab fa-instagram"></i></a>
+                        <a href="#" style="color: white; font-size: 1.2rem;"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Liens rapides</h4>
+                    <ul>
+                        <li><a href="#home">Accueil</a></li>
+                        <li><a href="#features">Fonctionnalités</a></li>
+                        <li><a href="#consultation">Consultation</a></li>
+                        <li><a href="#specialties">Spécialités</a></li>
+                        <li><a href="#products">Produits</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Légal</h4>
+                    <ul>
+                        <li><a href="https://drive.google.com/file/d/16kLNXaenNcY7f1hMOjjv-wojTfQdV39P/view?usp=drive_link" target="_blank">À propos</a></li>
+                        <li><a href="https://drive.google.com/file/d/1bNaC2EGFWGEf1XCsdk_a2l35gmUFfRaR/view?usp=drive_link" target="_blank">Politique de confidentialité</a></li>
+                        <li><a href="#">Conditions d'utilisation</a></li>
+                        <li><a href="#">Mentions légales</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><i class="fas fa-envelope" style="margin-right: 0.5rem;"></i> contact@marketingcgcfoqmu.top</li>
+                        <li><i class="fas fa-phone" style="margin-right: 0.5rem;"></i> +237 650 862 38</li>
+                        <li><i class="fas fa-map-marker-alt" style="margin-right: 0.5rem;"></i> Douala-Cameroun, Toronto-Canada</li>
+                        <li><i class="fas fa-user" style="margin-right: 0.5rem;"></i> djodjogaelle52@gmail.com</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 CGEFO-QMU Health. Tous droits réservés.</p>
+                <p><em>Cette application ne remplace pas une consultation médicale en personne. Consultez toujours un professionnel de santé pour un diagnostic définitif.</em></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <button class="modal-close" id="closeLoginModal">&times;</button>
+            <h2>Connexion</h2>
+            <p>Connectez-vous à votre compte pour accéder à vos consultations.</p>
+            
+            <div style="margin: 2rem 0;">
+                <button class="btn btn-outline" style="width: 100%; margin-bottom: 1rem;" id="googleLoginBtn">
+                    <i class="fab fa-google"></i> Continuer avec Google
+                </button>
+                
+                <div style="text-align: center; margin: 1rem 0; color: var(--gray);">Ou</div>
+                
+                <form id="loginForm">
+                    <div style="margin-bottom: 1rem;">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" style="width: 100%; padding: 0.75rem; border: 1px solid var(--light-gray); border-radius: var(--radius); margin-top: 0.5rem;">
+                    </div>
+                    
+                    <div style="margin-bottom: 1.5rem;">
+                        <label for="password">Mot de passe</label>
+                        <input type="password" id="password" style="width: 100%; padding: 0.75rem; border: 1px solid var(--light-gray); border-radius: var(--radius); margin-top: 0.5rem;">
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Se connecter</button>
+                </form>
+            </div>
+            
+            <p style="text-align: center; margin-top: 1.5rem;">
+                Pas encore de compte ? <a href="#" id="switchToSignup" style="color: var(--primary);">S'inscrire</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Données des produits
+        const productsData = {
+            dermatologie: [
+                {
+                    id: 1,
+                    name: "Crème anti-acné X",
+                    description: "Crème régulatrice de sébum et anti-inflammatoire pour traiter l'acné légère à modérée.",
+                    notice: "Appliquez deux fois par jour sur les zones touchées après nettoyage de la peau.",
+                    price: "24,99 €",
+                    image: "🧴"
+                },
+                {
+                    id: 2,
+                    name: "Sérum anti-taches",
+                    description: "Sérum éclaircissant pour réduire les taches de pigmentation et unifier le teint.",
+                    notice: "Appliquez le soir sur une peau propre, en évitant le contour des yeux.",
+                    price: "32,50 €",
+                    image: "💧"
+                },
+                {
+                    id: 3,
+                    name: "Crème hydratante réparatrice",
+                    description: "Crème intensive pour peaux sèches et irritées, avec céramides et acide hyaluronique.",
+                    notice: "Appliquez matin et soir sur le visage et le cou.",
+                    price: "28,75 €",
+                    image: "🧴"
+                }
+            ],
+            ophtalmologie: [
+                {
+                    id: 4,
+                    name: "Lunettes de vue Y",
+                    description: "Lunettes adaptées à la correction de la myopie avec verres anti-reflets.",
+                    notice: "Porter tous les jours pour une vision optimale.",
+                    price: "129,99 €",
+                    image: "👓"
+                },
+                {
+                    id: 5,
+                    name: "Gouttes hydratantes",
+                    description: "Larmes artificielles pour soulager la sécheresse oculaire et les irritations.",
+                    notice: "Instiller 1 à 2 gouttes dans chaque œil, 3 à 4 fois par jour.",
+                    price: "12,90 €",
+                    image: "💧"
+                },
+                {
+                    id: 6,
+                    name: "Solution nettoyante pour lentilles",
+                    description: "Solution multifonction pour le nettoyage, le rinçage et la désinfection des lentilles.",
+                    notice: "Utiliser quotidiennement pour entretenir vos lentilles de contact.",
+                    price: "15,50 €",
+                    image: "🧴"
+                }
+            ],
+            gynecologie: [
+                {
+                    id: 7,
+                    name: "Crème apaisante Z",
+                    description: "Crème apaisante pour les irritations vaginales, à base d'ingrédients naturels.",
+                    notice: "Appliquez matin et soir après la douche sur les zones externes.",
+                    price: "18,90 €",
+                    image: "🧴"
+                },
+                {
+                    id: 8,
+                    name: "Gel intime équilibrant",
+                    description: "Gel lavant au pH physiologique pour l'hygiène intime quotidienne.",
+                    notice: "Utiliser une fois par jour pendant la douche.",
+                    price: "9,99 €",
+                    image: "🧴"
+                },
+                {
+                    id: 9,
+                    name: "Supplément nutritionnel",
+                    description: "Complément alimentaire pour soutenir la santé gynécologique et hormonale.",
+                    notice: "Prendre un comprimé par jour avec un grand verre d'eau.",
+                    price: "26,40 €",
+                    image: "💊"
+                }
+            ]
+        };
+
+        // Éléments DOM
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mainNav = document.getElementById('mainNav');
+        const loginBtn = document.getElementById('loginBtn');
+        const signupBtn = document.getElementById('signupBtn');
+        const startConsultationBtn = document.getElementById('startConsultation');
+        const loginModal = document.getElementById('loginModal');
+        const closeLoginModal = document.getElementById('closeLoginModal');
+        const specialtyBtns = document.querySelectorAll('[data-specialty]');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const productsGrid = document.querySelector('.products-grid');
+        const imageUploadArea = document.getElementById('imageUploadArea');
+        const imageInput = document.getElementById('imageInput');
+        const analyzeWithAI = document.getElementById('analyzeWithAI');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const analysisResults = document.getElementById('analysisResults');
+        const aiResultsContent = document.getElementById('aiResultsContent');
+        const viewProducts = document.getElementById('viewProducts');
+        const specialtySelect = document.getElementById('specialtySelect');
+        const symptomsDescription = document.getElementById('symptomsDescription');
+        const googleLoginBtn = document.getElementById('googleLoginBtn');
+
+        // Variables d'état
+        let uploadedImages = [];
+        let currentSpecialty = '';
+        let isLoggedIn = false;
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Charger tous les produits au démarrage
+            loadProducts('all');
+            
+            // Gestion du menu mobile
+            mobileMenuBtn.addEventListener('click', function() {
+                mainNav.classList.toggle('active');
+            });
+            
+            // Fermer le menu mobile en cliquant sur un lien
+            document.querySelectorAll('nav a').forEach(link => {
+                link.addEventListener('click', function() {
+                    mainNav.classList.remove('active');
+                });
+            });
+            
+            // Gestion des modales
+            loginBtn.addEventListener('click', function() {
+                loginModal.style.display = 'flex';
+            });
+            
+            signupBtn.addEventListener('click', function() {
+                loginModal.style.display = 'flex';
+            });
+            
+            closeLoginModal.addEventListener('click', function() {
+                loginModal.style.display = 'none';
+            });
+            
+            window.addEventListener('click', function(event) {
+                if (event.target === loginModal) {
+                    loginModal.style.display = 'none';
+                }
+            });
+            
+            // Démarrer une consultation
+            startConsultationBtn.addEventListener('click', function() {
+                if (!isLoggedIn) {
+                    alert('Veuillez vous connecter pour commencer une consultation.');
+                    loginModal.style.display = 'flex';
+                    return;
+                }
+                document.getElementById('consultation').scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            // Boutons de spécialité
+            specialtyBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    if (!isLoggedIn) {
+                        alert('Veuillez vous connecter pour consulter un spécialiste.');
+                        loginModal.style.display = 'flex';
+                        return;
+                    }
+                    const specialty = this.getAttribute('data-specialty');
+                    specialtySelect.value = specialty;
+                    currentSpecialty = specialty;
+                    document.getElementById('consultation').scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+            
+            // Gestion du téléchargement d'images
+            imageUploadArea.addEventListener('click', function() {
+                if (!isLoggedIn) {
+                    alert('Veuillez vous connecter pour télécharger des images.');
+                    loginModal.style.display = 'flex';
+                    return;
+                }
+                imageInput.click();
+            });
+            
+            imageInput.addEventListener('change', function(e) {
+                handleImageUpload(e.target.files);
+            });
+            
+            // Glisser-déposer d'images
+            imageUploadArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                imageUploadArea.style.borderColor = 'var(--primary)';
+                imageUploadArea.style.backgroundColor = '#f0f9ff';
+            });
+            
+            imageUploadArea.addEventListener('dragleave', function() {
+                imageUploadArea.style.borderColor = 'var(--light-gray)';
+                imageUploadArea.style.backgroundColor = 'white';
+            });
+            
+            imageUploadArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                imageUploadArea.style.borderColor = 'var(--light-gray)';
+                imageUploadArea.style.backgroundColor = 'white';
+                
+                if (e.dataTransfer.files.length) {
+                    handleImageUpload(e.dataTransfer.files);
+                }
+            });
+            
+            // Analyse avec IA
+            analyzeWithAI.addEventListener('click', function() {
+                if (!isLoggedIn) {
+                    alert('Veuillez vous connecter pour utiliser l\'analyse IA.');
+                    loginModal.style.display = 'flex';
+                    return;
+                }
+                
+                if (!specialtySelect.value) {
+                    alert('Veuillez sélectionner une spécialité médicale.');
+                    return;
+                }
+                
+                if (uploadedImages.length === 0 && !symptomsDescription.value.trim()) {
+                    alert('Veuillez télécharger au moins une image ou décrire vos symptômes.');
+                    return;
+                }
+                
+                performAIAnalysis();
+            });
+            
+            // Voir les produits recommandés
+            viewProducts.addEventListener('click', function() {
+                document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
+                if (currentSpecialty) {
+                    loadProducts(currentSpecialty);
+                    // Activer le filtre correspondant
+                    filterBtns.forEach(btn => {
+                        if (btn.getAttribute('data-filter') === currentSpecialty) {
+                            btn.classList.add('active');
+                        } else {
+                            btn.classList.remove('active');
+                        }
+                    });
+                }
+            });
+            
+            // Gestion des filtres de produits
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    const filter = this.getAttribute('data-filter');
+                    loadProducts(filter);
+                });
+            });
+            
+            // Connexion Google
+            googleLoginBtn.addEventListener('click', function() {
+                simulateGoogleLogin();
+            });
+            
+            // Formulaire de connexion
+            document.getElementById('loginForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                
+                if (email && password) {
+                    isLoggedIn = true;
+                    alert('Connexion réussie !');
+                    loginModal.style.display = 'none';
+                    updateAuthButtons();
+                } else {
+                    alert('Veuillez remplir tous les champs.');
+                }
+            });
+            
+            // Navigation fluide
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+        });
+        
+        // Gérer le téléchargement d'images
+        function handleImageUpload(files) {
+            uploadedImages = Array.from(files);
+            
+            if (uploadedImages.length > 0) {
+                document.getElementById('uploadedImages').style.display = 'block';
+                const preview = document.getElementById('imagePreview');
+                preview.innerHTML = '';
+                
+                uploadedImages.forEach((file, index) => {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const imgContainer = document.createElement('div');
+                        imgContainer.style.width = '100px';
+                        imgContainer.style.height = '100px';
+                        imgContainer.style.position = 'relative';
+                        
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.style.width = '100%';
+                        img.style.height = '100%';
+                        img.style.objectFit = 'cover';
+                        img.style.borderRadius = '4px';
+                        
+                        const removeBtn = document.createElement('button');
+                        removeBtn.innerHTML = '×';
+                        removeBtn.style.position = 'absolute';
+                        removeBtn.style.top = '-5px';
+                        removeBtn.style.right = '-5px';
+                        removeBtn.style.background = 'var(--danger)';
+                        removeBtn.style.color = 'white';
+                        removeBtn.style.border = 'none';
+                        removeBtn.style.borderRadius = '50%';
+                        removeBtn.style.width = '20px';
+                        removeBtn.style.height = '20px';
+                        removeBtn.style.cursor = 'pointer';
+                        removeBtn.addEventListener('click', function() {
+                            uploadedImages.splice(index, 1);
+                            if (uploadedImages.length === 0) {
+                                document.getElementById('uploadedImages').style.display = 'none';
+                            }
+                            imgContainer.remove();
+                        });
+                        
+                        imgContainer.appendChild(img);
+                        imgContainer.appendChild(removeBtn);
+                        preview.appendChild(imgContainer);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
+        }
+        
+        // Effectuer l'analyse IA
+        function performAIAnalysis() {
+            const specialty = specialtySelect.value;
+            const symptoms = symptomsDescription.value;
+            
+            // Afficher le spinner
+            loadingSpinner.style.display = 'block';
+            analyzeWithAI.disabled = true;
+            analyzeWithAI.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Analyse en cours...';
+            
+            // Simuler un délai d'analyse
+            setTimeout(() => {
+                // Simuler une réponse de l'API OpenAI
+                const analysisResult = simulateOpenAIAnalysis(specialty, symptoms);
+                
+                // Cacher le spinner
+                loadingSpinner.style.display = 'none';
+                analyzeWithAI.disabled = false;
+                analyzeWithAI.innerHTML = '<i class="fas fa-robot"></i> Analyser avec l\'IA';
+                
+                // Afficher les résultats
+                displayAnalysisResults(analysisResult);
+                
+                // Faire défiler jusqu'aux résultats
+                analysisResults.scrollIntoView({ behavior: 'smooth' });
+            }, 3000);
+        }
+        
+        // Simuler l'analyse OpenAI
+        function simulateOpenAIAnalysis(specialty, symptoms) {
+            const diagnoses = {
+                dermatologie: [
+                    "Acné légère à modérée",
+                    "Eczéma atopique",
+                    "Psoriasis",
+                    "Rosacée",
+                    "Dermatite séborrhéique"
+                ],
+                ophtalmologie: [
+                    "Conjonctivite allergique",
+                    "Sécheresse oculaire",
+                    "Myopie légère",
+                    "Cataracte débutante",
+                    "Glaucome suspect"
+                ],
+                gynecologie: [
+                    "Infection fongique",
+                    "Vaginose bactérienne",
+                    "Syndrome prémenstruel",
+                    "Dysménorrhée",
+                    "Infection urinaire"
+                ]
+            };
+            
+            const recommendations = {
+                dermatologie: [
+                    "Nettoyage doux deux fois par jour",
+                    "Éviter les produits comédogènes",
+                    "Protection solaire SPF 30+",
+                    "Hydratation régulière",
+                    "Éviter le grattage"
+                ],
+                ophtalmologie: [
+                    "Repos visuel régulier",
+                    "Gouttes hydratantes 3x/jour",
+                    "Éviter l'exposition aux écrans prolongée",
+                    "Protection contre les UV",
+                    "Consultation ophtalmologique annuelle"
+                ],
+                gynecologie: [
+                    "Hygiène intime douce",
+                    "Éviter les douches vaginales",
+                    "Sous-vêtements en coton",
+                    "Hydratation abondante",
+                    "Consultation gynécologique"
+                ]
+            };
+            
+            const randomDiagnosis = diagnoses[specialty][Math.floor(Math.random() * diagnoses[specialty].length)];
+            const randomRecommendation = recommendations[specialty][Math.floor(Math.random() * recommendations[specialty].length)];
+            
+            return {
+                diagnosis: randomDiagnosis,
+                confidence: Math.floor(Math.random() * 30) + 70, // 70-99%
+                recommendations: [
+                    randomRecommendation,
+                    "Repos adéquat",
+                    "Hydratation suffisante",
+                    "Alimentation équilibrée"
+                ],
+                urgency: symptoms.includes("douleur") || symptoms.includes("sévère") ? "Élevée" : "Modérée",
+                specialty: specialty
+            };
+        }
+        
+        // Afficher les résultats de l'analyse
+        function displayAnalysisResults(results) {
+            currentSpecialty = results.specialty;
+            
+            aiResultsContent.innerHTML = `
+                <div style="margin-bottom: 1.5rem;">
+                    <h5 style="color: var(--primary); margin-bottom: 0.5rem;">Diagnostic préliminaire</h5>
+                    <p style="font-size: 1.2rem; font-weight: 600;">${results.diagnosis}</p>
+                    <p style="color: var(--gray); font-size: 0.9rem;">Confiance: ${results.confidence}%</p>
+                </div>
+                
+                <div style="margin-bottom: 1.5rem;">
+                    <h5 style="color: var(--primary); margin-bottom: 0.5rem;">Niveau d'urgence</h5>
+                    <p style="padding: 0.5rem 1rem; background-color: ${results.urgency === 'Élevée' ? '#fee2e2' : '#fef3c7'}; color: ${results.urgency === 'Élevée' ? '#dc2626' : '#d97706'}; border-radius: var(--radius); display: inline-block;">${results.urgency}</p>
+                </div>
+                
+                <div style="margin-bottom: 1.5rem;">
+                    <h5 style="color: var(--primary); margin-bottom: 0.5rem;">Recommandations médicales</h5>
+                    <ul style="list-style-type: none; padding-left: 0;">
+                        ${results.recommendations.map(rec => `<li style="margin-bottom: 0.5rem; padding-left: 1.5rem; position: relative;"><i class="fas fa-check-circle" style="color: var(--secondary); position: absolute; left: 0;"></i> ${rec}</li>`).join('')}
+                    </ul>
+                </div>
+                
+                <div style="background-color: #fef3c7; padding: 1rem; border-radius: var(--radius); border-left: 4px solid var(--warning);">
+                    <h5 style="color: var(--warning); margin-bottom: 0.5rem;">Avertissement important</h5>
+                    <p style="font-size: 0.9rem; margin: 0;">Ce diagnostic est préliminaire et basé sur l'analyse IA. Consultez un professionnel de santé pour un diagnostic définitif et un traitement approprié.</p>
+                </div>
+            `;
+            
+            analysisResults.style.display = 'block';
+        }
+        
+        // Charger les produits
+        function loadProducts(filter) {
+            productsGrid.innerHTML = '';
+            
+            let productsToShow = [];
+            
+            if (filter === 'all') {
+                for (const category in productsData) {
+                    productsToShow = productsToShow.concat(productsData[category]);
+                }
+            } else {
+                productsToShow = productsData[filter] || [];
+            }
+            
+            productsToShow.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                
+                let categoryText = '';
+                if (product.id <= 3) categoryText = 'Dermatologie';
+                else if (product.id <= 6) categoryText = 'Ophtalmologie';
+                else categoryText = 'Gynécologie';
+                
+                productCard.innerHTML = `
+                    <div class="product-image">
+                        <span style="font-size: 4rem;">${product.image}</span>
+                    </div>
+                    <div class="product-content">
+                        <div class="product-category">${categoryText}</div>
+                        <h3>${product.name}</h3>
+                        <p>${product.description}</p>
+                        <div class="product-price">${product.price}</div>
+                        <button class="btn btn-outline view-product-details" data-id="${product.id}">
+                            <i class="fas fa-info-circle"></i> Détails
+                        </button>
+                        <button class="btn btn-primary add-to-cart" data-id="${product.id}" style="margin-top: 0.5rem;">
+                            <i class="fas fa-shopping-cart"></i> Ajouter au panier
+                        </button>
+                    </div>
+                `;
+                
+                productsGrid.appendChild(productCard);
+            });
+            
+            // Ajouter les événements aux boutons
+            document.querySelectorAll('.view-product-details').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const productId = parseInt(this.getAttribute('data-id'));
+                    const product = findProductById(productId);
+                    showProductDetails(product);
+                });
+            });
+            
+            document.querySelectorAll('.add-to-cart').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const productId = parseInt(this.getAttribute('data-id'));
+                    const product = findProductById(productId);
+                    addToCart(product);
+                });
+            });
+        }
+        
+        // Trouver un produit par ID
+        function findProductById(id) {
+            for (const category in productsData) {
+                const product = productsData[category].find(p => p.id === id);
+                if (product) return product;
+            }
+            return null;
+        }
+        
+        // Afficher les détails du produit
+        function showProductDetails(product) {
+            let categoryText = '';
+            if (product.id <= 3) categoryText = 'Dermatologie';
+            else if (product.id <= 6) categoryText = 'Ophtalmologie';
+            else categoryText = 'Gynécologie';
+            
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+            modal.style.display = 'flex';
+            
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <button class="modal-close close-product-modal">&times;</button>
+                    <h2>${product.name}</h2>
+                    <p><strong>Catégorie:</strong> ${categoryText}</p>
+                    <p><strong>Prix:</strong> ${product.price}</p>
+                    
+                    <div style="margin: 1.5rem 0;">
+                        <h4>Description</h4>
+                        <p>${product.description}</p>
+                    </div>
+                    
+                    <div style="margin: 1.5rem 0;">
+                        <h4>Notice d'utilisation</h4>
+                        <p>${product.notice}</p>
+                    </div>
+                    
+                    <button class="btn btn-primary add-to-cart-modal" data-id="${product.id}" style="width: 100%;">
+                        <i class="fas fa-shopping-cart"></i> Ajouter au panier
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Fermer la modale
+            modal.querySelector('.close-product-modal').addEventListener('click', function() {
+                document.body.removeChild(modal);
+            });
+            
+            modal.querySelector('.add-to-cart-modal').addEventListener('click', function() {
+                addToCart(product);
+                document.body.removeChild(modal);
+            });
+            
+            modal.addEventListener('click', function(event) {
+                if (event.target === modal) {
+                    document.body.removeChild(modal);
+                }
+            });
+        }
+        
+        // Ajouter au panier
+        function addToCart(product) {
+            if (!isLoggedIn) {
+                alert('Veuillez vous connecter pour ajouter des produits au panier.');
+                loginModal.style.display = 'flex';
+                return;
+            }
+            alert(`${product.name} a été ajouté à votre panier.`);
+        }
+        
+        // Simuler la connexion Google
+        function simulateGoogleLogin() {
+            alert('Connexion avec Google en cours...');
+            setTimeout(() => {
+                isLoggedIn = true;
+                alert('Connexion Google réussie !');
+                loginModal.style.display = 'none';
+                updateAuthButtons();
+            }, 1500);
+        }
+        
+        // Mettre à jour les boutons d'authentification
+        function updateAuthButtons() {
+            if (isLoggedIn) {
+                loginBtn.innerHTML = '<i class="fas fa-user"></i> Mon compte';
+                signupBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Déconnexion';
+                
+                signupBtn.onclick = function() {
+                    isLoggedIn = false;
+                    alert('Déconnexion réussie.');
+                    loginBtn.innerHTML = 'Connexion';
+                    signupBtn.innerHTML = 'S\'inscrire';
+                    signupBtn.onclick = function() {
+                        loginModal.style.display = 'flex';
+                    };
+                };
+            }
+        }
+    </script>
+</body>
+</html>
