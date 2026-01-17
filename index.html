@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CGEFO-QMU Health - Consultation Médicale Virtuelle avec IA</title>
+    <meta charset="UTF-8">
+  <title>Connexion Google</title>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
@@ -828,6 +832,59 @@
                     <button class="btn btn-outline" id="loginBtn">Connexion</button>
                     <button class="btn btn-primary" id="signupBtn">S'inscrire</button>
                 </div>
+             <script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  let googleReady = false;
+
+  function initGoogle() {
+    if (googleReady) return;
+
+    google.accounts.id.initialize({
+      client_id: "617723363620-4kgh72venqisderkh8vrpd19f9phrtmh.apps.googleusercontent.com",
+      callback: handleCredentialResponse,
+      auto_select: false,
+      cancel_on_tap_outside: false
+    });
+
+    googleReady = true;
+  }
+
+  document.getElementById("loginBtn").addEventListener("click", startGoogleAuth);
+  document.getElementById("signupBtn").addEventListener("click", startGoogleAuth);
+
+  function startGoogleAuth() {
+    initGoogle();
+    google.accounts.id.prompt();
+  }
+
+  function handleCredentialResponse(response) {
+    // 🔓 Décodage du token (frontend only)
+    const payload = JSON.parse(atob(response.credential.split(".")[1]));
+
+    const user = {
+      email: payload.email,
+      name: payload.name,
+      picture: payload.picture,
+      loggedInWith: "google",
+      loginTime: new Date().toISOString()
+    };
+
+    console.log("Utilisateur Google :", user);
+
+    // 💾 Session locale
+    localStorage.setItem("googleUser", JSON.stringify(user));
+
+    // ✅ Connexion réussie
+    alert("Connexion Google réussie : " + user.email);
+
+    // 🔁 Redirection
+    window.location.href = "/dashboard.html";
+  }
+
+});
+</script>
+
             </div>
         </div>
     </header>
